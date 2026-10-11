@@ -1,0 +1,137 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1020 600" width="100%" height="100%">
+  <defs>
+    <style>
+      .bg { fill: #0f172a; }
+      .box-input { fill: #1e293b; stroke: #38bdf8; stroke-width: 2; rx: 8; }
+      .box-ctrl { fill: #1e1b4b; stroke: #a855f7; stroke-width: 2; rx: 8; }
+      .box-data { fill: #064e3b; stroke: #10b981; stroke-width: 2; rx: 8; }
+      .box-out { fill: #1e293b; stroke: #f59e0b; stroke-width: 2; rx: 8; }
+      .box-sub { fill: #0f2e22; stroke: #34d399; stroke-dasharray: 4; stroke-width: 1.5; rx: 6; }
+      .title-text { fill: #f8fafc; font-family: system-ui, -apple-system, sans-serif; font-size: 16px; font-weight: bold; }
+      .label-text { fill: #e2e8f0; font-family: system-ui, -apple-system, sans-serif; font-size: 12px; font-weight: 600; text-anchor: middle; }
+      .sub-text { fill: #94a3b8; font-family: system-ui, -apple-system, sans-serif; font-size: 10px; text-anchor: middle; }
+      .bus-text { fill: #38bdf8; font-family: monospace; font-size: 11px; font-weight: bold; }
+      .arrow { stroke: #38bdf8; stroke-width: 2; fill: none; marker-end: url(#arrow-blue); }
+      .arrow-ctrl { stroke: #c084fc; stroke-width: 2; stroke-dasharray: 3 3; fill: none; marker-end: url(#arrow-purple); }
+      .arrow-data { stroke: #10b981; stroke-width: 2.2; fill: none; marker-end: url(#arrow-green); }
+      .arrow-out { stroke: #f59e0b; stroke-width: 2; fill: none; marker-end: url(#arrow-amber); }
+    </style>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#38bdf8"/>
+    </marker>
+    <marker id="arrow-purple" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#c084fc"/>
+    </marker>
+    <marker id="arrow-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#10b981"/>
+    </marker>
+    <marker id="arrow-amber" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#f59e0b"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1020" height="600" class="bg" rx="14"/>
+
+  <text x="510" y="32" class="title-text" font-size="18" text-anchor="middle" fill="#38bdf8">4-Bank 64 KB SRAM Microarchitecture Block Diagram</text>
+
+  <!-- External Inputs -->
+  <g id="inputs">
+    <rect x="25" y="60" width="130" height="510" class="box-input" fill-opacity="0.25"/>
+    <text x="90" y="85" class="label-text" fill="#38bdf8">Host Interface</text>
+
+    <rect x="35" y="105" width="110" height="28" class="box-input"/>
+    <text x="90" y="123" class="label-text">clk (100 MHz)</text>
+
+    <rect x="35" y="145" width="110" height="28" class="box-ctrl"/>
+    <text x="90" y="163" class="label-text" fill="#e9d5ff">cs (Chip Select)</text>
+
+    <rect x="35" y="185" width="110" height="28" class="box-ctrl"/>
+    <text x="90" y="203" class="label-text" fill="#e9d5ff">write_en</text>
+
+    <rect x="35" y="225" width="110" height="42" class="box-ctrl"/>
+    <text x="90" y="245" class="label-text" fill="#e9d5ff">bank_sel</text>
+    <text x="90" y="258" class="sub-text">[1:0] (2-bit)</text>
+
+    <rect x="35" y="290" width="110" height="42" class="box-input"/>
+    <text x="90" y="310" class="label-text">addr</text>
+    <text x="90" y="323" class="sub-text">[11:0] (4K rows)</text>
+
+    <rect x="35" y="355" width="110" height="45" class="box-input"/>
+    <text x="90" y="377" class="label-text">write_data</text>
+    <text x="90" y="390" class="sub-text">[31:0] (32-bit)</text>
+  </g>
+
+  <!-- Bank Decoder Unit -->
+  <g id="decoder">
+    <rect x="190" y="130" width="160" height="220" class="box-ctrl"/>
+    <text x="270" y="160" class="label-text" fill="#c084fc">2-to-4 Bank Decoder</text>
+    <text x="270" y="180" class="sub-text">1-Hot Chip Enables</text>
+    <text x="270" y="210" class="sub-text">cs_bank[0] = cs &amp; (b==0)</text>
+    <text x="270" y="235" class="sub-text">cs_bank[1] = cs &amp; (b==1)</text>
+    <text x="270" y="260" class="sub-text">cs_bank[2] = cs &amp; (b==2)</text>
+    <text x="270" y="285" class="sub-text">cs_bank[3] = cs &amp; (b==3)</text>
+    <text x="270" y="320" class="sub-text">Gated write_en per bank</text>
+  </g>
+
+  <!-- 4 Independent SRAM Banks (Center Column) -->
+  <g id="banks">
+    <rect x="390" y="60" width="370" height="510" class="box-sub"/>
+    <text x="575" y="85" class="label-text" fill="#34d399">4x Independent SRAM Macro Banks (Total 64 KB)</text>
+
+    <!-- Bank 0 -->
+    <rect x="410" y="105" width="330" height="95" class="box-data"/>
+    <text x="575" y="130" class="label-text" fill="#a7f3d0">BANK 0 — 16 KB (4096 words x 32 bits)</text>
+    <text x="575" y="150" class="sub-text">Synchronous Read / Write | Addr Range: 0..4095</text>
+    <text x="575" y="175" class="bus-text" text-anchor="middle">dout_b0[31:0]</text>
+
+    <!-- Bank 1 -->
+    <rect x="410" y="215" width="330" height="95" class="box-data"/>
+    <text x="575" y="240" class="label-text" fill="#a7f3d0">BANK 1 — 16 KB (4096 words x 32 bits)</text>
+    <text x="575" y="260" class="sub-text">Synchronous Read / Write | Addr Range: 0..4095</text>
+    <text x="575" y="285" class="bus-text" text-anchor="middle">dout_b1[31:0]</text>
+
+    <!-- Bank 2 -->
+    <rect x="410" y="325" width="330" height="95" class="box-data"/>
+    <text x="575" y="350" class="label-text" fill="#a7f3d0">BANK 2 — 16 KB (4096 words x 32 bits)</text>
+    <text x="575" y="370" class="sub-text">Synchronous Read / Write | Addr Range: 0..4095</text>
+    <text x="575" y="395" class="bus-text" text-anchor="middle">dout_b2[31:0]</text>
+
+    <!-- Bank 3 -->
+    <rect x="410" y="435" width="330" height="95" class="box-data"/>
+    <text x="575" y="460" class="label-text" fill="#a7f3d0">BANK 3 — 16 KB (4096 words x 32 bits)</text>
+    <text x="575" y="480" class="sub-text">Synchronous Read / Write | Addr Range: 0..4095</text>
+    <text x="575" y="505" class="bus-text" text-anchor="middle">dout_b3[31:0]</text>
+  </g>
+
+  <!-- Output Multiplexer & Port -->
+  <g id="output">
+    <!-- 4:1 Mux -->
+    <polygon points="800,200 870,240 870,380 800,420" fill="#1e1b4b" stroke="#f59e0b" stroke-width="2"/>
+    <text x="835" y="300" class="label-text" fill="#fef08a" transform="rotate(-90 835 300)">4:1 Mux</text>
+
+    <rect x="900" y="275" width="105" height="70" class="box-out"/>
+    <text x="952" y="305" class="label-text" fill="#fef08a">read_data</text>
+    <text x="952" y="325" class="sub-text">[31:0] Output</text>
+  </g>
+
+  <!-- Arrows -->
+  <path d="M 145 246 L 190 246" class="arrow-ctrl"/>
+  <path d="M 350 200 L 410 150" class="arrow-ctrl"/>
+  <path d="M 350 220 L 410 250" class="arrow-ctrl"/>
+  <path d="M 350 240 L 410 360" class="arrow-ctrl"/>
+  <path d="M 350 260 L 410 470" class="arrow-ctrl"/>
+
+  <!-- Shared Address and Data distribution -->
+  <path d="M 145 311 L 390 311" class="arrow"/>
+  <path d="M 145 377 L 390 377" class="arrow"/>
+
+  <!-- Bank outputs to MUX -->
+  <path d="M 740 150 L 800 230" class="arrow-data"/>
+  <path d="M 740 260 L 800 280" class="arrow-data"/>
+  <path d="M 740 370 L 800 340" class="arrow-data"/>
+  <path d="M 740 480 L 800 390" class="arrow-data"/>
+
+  <!-- MUX to read_data -->
+  <path d="M 870 310 L 900 310" class="arrow-out"/>
+</svg>
