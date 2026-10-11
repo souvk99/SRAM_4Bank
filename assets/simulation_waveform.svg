@@ -161,3 +161,4 @@
   <rect x="230" y="540" width="760" height="40" fill="#064e3b" rx="6" stroke="#10b981" stroke-width="1.5"/>
   <text x="610" y="565" fill="#a7f3d0" font-family="system-ui" font-size="13px" font-weight="bold" text-anchor="middle">ZERO COLLISION / ZERO ALIASING: Address 10 holds distinct data across all 4 independent SRAM banks!</text>
 </svg>
+
